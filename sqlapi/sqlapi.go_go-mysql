@@ -1,0 +1,141 @@
+package sqlapi
+
+import (
+	"log"
+	"net"
+
+	"github.com/juju/errors"
+	"github.com/siddontang/go-mysql/mysql"
+	"github.com/siddontang/go-mysql/server"
+	"github.com/xwb1989/sqlparser"
+)
+
+type (
+	Server struct {
+	}
+
+	Handler struct {
+		c  net.Conn
+		db string
+	}
+
+	Query struct {
+		stmt sqlparser.Statement
+	}
+)
+
+func New() *Server {
+	return &Server{}
+}
+
+func (s *Server) Serve(l net.Listener) error {
+	for {
+		c, err := l.Accept()
+		if err != nil {
+			return errors.Trace(err)
+		}
+
+		go s.serveConn(c)
+	}
+}
+
+func (s *Server) Handler(c net.Conn) server.Handler {
+	return &Handler{c: c}
+}
+
+func (s *Server) serveConn(c net.Conn) error {
+	h := s.Handler(c)
+
+	sqlc, err := server.NewConn(c, "user", "", h)
+	if err != nil {
+		return errors.Trace(err)
+	}
+
+	for err == nil {
+		err = sqlc.HandleCommand()
+	}
+
+	log.Printf("Handle command: %v", err)
+
+	return err
+}
+
+func (h *Handler) UseDB(db string) error {
+	h.db = db
+	return nil
+}
+
+func (h *Handler) HandleQuery(q string) (*mysql.Result, error) {
+	stmt, err := sqlparser.Parse(q)
+	if err != nil {
+		return nil, errors.Trace(err)
+	}
+
+	//q := &Query{
+	//	stmt: stmt,
+	//}
+
+	res := &mysql.Result{
+		Status: 0, //mysql.SERVER_STATUS_DB_DROPPED,
+		Resultset: &mysql.Resultset{
+			Fields: []*mysql.Field{
+				{Data: mysql.FieldData("abc1"), Name: []byte("field name1"), Table: []byte("table1")},
+				{Data: mysql.FieldData("abc2"), Name: []byte("field name2"), Table: []byte("table2")},
+			},
+			FieldNames: map[string]int{
+				"f1": 0,
+				"f2": 1,
+			},
+
+			Values: [][]interface{}{
+				[]interface{}{1, 2},
+				[]interface{}{3, 4},
+				[]interface{}{5, 6},
+			},
+
+			/*
+				RowDatas: []mysql.RowData{
+					mysql.RowData("data1"),
+					mysql.RowData("data2"),
+					mysql.RowData("data3")},
+			*/
+		},
+	}
+	_ = res
+
+	switch stmt := stmt.(type) {
+	case *sqlparser.Select:
+		log.Printf("HandleQuery select: %v", stmt)
+	case *sqlparser.Insert:
+		log.Printf("HandleQuery select: %v", stmt)
+	default:
+		log.Printf("HandleQuery unsupported: %v", stmt)
+	}
+
+	return res, nil
+}
+
+func (h *Handler) HandleFieldList(tab, filt string) ([]*mysql.Field, error) {
+	log.Printf("HandleFieldList: %q %q", tab, filt)
+	return nil, errors.New("not implemented")
+}
+
+func (h *Handler) HandleStmtPrepare(q string) (params, columns int, context interface{}, err error) {
+	log.Printf("HandleStmtPrepare: %v", q)
+	return 0, 0, nil, errors.New("not implemented")
+}
+
+func (h *Handler) HandleStmtExecute(context interface{}, q string, args []interface{}) (*mysql.Result, error) {
+	log.Printf("HandleStmtExecute: %v", q)
+	return nil, errors.New("not implemented")
+}
+
+func (h *Handler) HandleStmtClose(context interface{}) error {
+	log.Printf("HandleStmtClose: %v", context)
+	return errors.New("not implemented")
+}
+
+func (h *Handler) HandleOtherCommand(cmd byte, data []byte) error {
+	log.Printf("HandleOtherCommand: %x", cmd)
+	return errors.New("not implemented")
+}

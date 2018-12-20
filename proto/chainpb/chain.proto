@@ -1,0 +1,79 @@
+syntax = "proto3";
+option go_package = "chainpb";
+package chain;
+
+// Transaction
+message Txn {
+  // Transaction ID
+  uint64 ID = 1;
+
+  // Transaction batch ID
+  // uint64 batch_id = 2;
+
+  // Sender
+  uint64 sender = 4;
+
+  // Receiver
+  uint64 receiver = 5;
+
+  // Amount
+  int64 amount = 6;
+
+  // Sender balance after transfer
+  int64 balance = 7;
+
+  // ...
+  // uint64 receiver_last_id = 8;
+
+  // Update, when account spends value
+  uint64 spent_by = 9;
+
+  // Previous transaction hash
+  bytes prev_hash = 10;
+
+  // Account input transactions hash
+  // bytes unspent_inputs_hash = 11;
+
+  // Account Settings ID
+  uint64 settings_id = 12;
+
+  // Transaction sign via public key
+  bytes sign = 13;
+
+  // Creation timestamp
+  // int64 created_at = 14;
+
+  // Timestamp of backend processing
+  // int64 processed_at = 15;
+
+  // Hash of important fields
+  bytes hash = 21;
+}
+
+// Account Settings transaction
+message Settings {
+  // Account Settings transaction ID
+  uint64 ID = 1;
+  // Account
+  uint64 account = 2;
+  // Previous Settings Hash
+  bytes prev_hash = 3;
+  // User Data Hash
+  bytes data_hash = 4;
+  // User Public Key
+  bytes public_key = 5;
+  // User request Sign
+  bytes sign = 6;
+  // Hash of this transaction
+  bytes hash = 7;
+  // Flag to verify transactions sign
+  bool verify_transfer_sign = 8;
+}
+
+// TxnID is am ID of transaction
+message TxnID {
+  // Account
+  uint64 account = 1;
+  // Account ID
+  uint64 ID = 2;
+}

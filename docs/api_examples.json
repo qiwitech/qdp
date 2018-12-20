@@ -1,0 +1,117 @@
+{
+  "pasePath": "/v1",
+  "definitions": {
+    "apiGetBalanceRequest": {
+      "example": {
+        "account": 200
+      }
+    },
+    "apiGetBalanceResponse": {
+      "properties": {
+        "balance": {
+          "example": 20030
+        }
+      }
+    },
+    "apiGetHistoryRequest": {
+      "example": {
+        "account": 201,
+        "limit": 10,
+        "token": "token_value"
+      }
+    },
+    "apiGetHistoryResponse": {
+      "properties": {
+        "token": {
+          "example": "next_token_value"
+        }
+      }
+    },
+    "apiGetLastSettingsRequest": {
+      "example": {
+        "account": 201
+      }
+    },
+    "apiGetLastSettingsResponse": {
+      "example": {
+        "status": {},
+        "id": 13,
+        "account": 202,
+        "public_key": "Z4hMo8osHh8DNqAERkEEXauPzNXhHGcdMoVUo9f3XBDEXtfEhUkL3NfSNB7oTqfV96A87Qg72UxYDd14TvDMVNr9",
+        "prev_hash": "25d4f2a86deb5e2574bb3210b67bb24fcc4afb19f93a7b65a057daa874a9d18e",
+        "data_hash": "a1fb50e6c86fae1679ef3351296fd6713411a08cf8dd1790a4fd05fae8688164",
+        "hash": "1a252402972f6057fa53cc172b52b9ffca698e18311facd0f3b06ecaaef79e17",
+        "sign": "01765ddfd925d70d41d53cabdba5f2588e678e534ef5d8840a813bc58d33198039006ce6395c6b95747a2e05d21ff3a47389638ba9405fd11ab1b0857f56426fcc6b9c6b95747a20",
+        "verify_transfer_sign": true
+      }
+    },
+    "apiGetPrevHashRequest": {
+      "example": {
+        "account": 200
+      }
+    },
+    "apiGetPrevHashResponse": {
+      "properties": {
+        "hash": {
+          "example": "252402972f6057fa53cc172b52b9ffca698e18311facd0f3b06ecaaef79e17"
+        }
+      }
+    },
+    "apiSettingsRequest": {
+      "example": {
+        "account": 205,
+        "public_key": "Z4hMo8osHh8DNqAERkEEXauPzNXhHGcdMoVUo9f3XBDEXtfEhUkL3NfSNB7oTqfV96A87Qg72UxYDd14TvDMVNr9",
+        "prev_hash": "85a0e6eb5530a682fa88345a5e7a144248f49e5b71b3eb587a9db5cd2957495a",
+        "data_hash": "1dadd7223f8953c76459851cca53c62990c1a7b87a5795d31bbfa4059160e9f8",
+        "sign": "9492c93e19492c939492c93e1bea6878136e57d8cc4619a371e649ff394e40c2dd7752b87c6be770ebb4458d6ad90aba40a11ee218e72cc77ad4bcba4432b62ff61738c71b4876f9",
+        "verify_transfer_sign": false
+      }
+    },
+    "apiSettingsResponse": {
+      "example": {
+        "status": {},
+        "settings_id": "205_3",
+        "hash": "9efe5a55840d37eb5db13a22ccab7e8f9867c982d1f7d18313c63fa0aa1c801b"
+      }
+    },
+    "apiStatus": {
+      "example": {
+        "code": "OK"
+      }
+    },
+    "apiTransferRequest": {
+      "example": {
+        "sender": 206,
+        "batch": [{"receiver": 207, "amount": 10000}, {"receiver": 208, "amount": 900}],
+        "settings_id": 4,
+        "prev_hash": "251afbc1fe2e0118f21efcd99a65edefb597b294c5b10ed79b7c46017614e8db",
+        "sign": "9492c93e19492c939492c93e1bea6878136e57d8cc4619a371e649ff394e40c2dd7752b87c6be770ebb4458d6ad90aba40a11ee218e72cc77ad4bcba4432b62ff61738c71b4876f9"
+      }
+    },
+    "apiTransferResponse": {
+      "example": {
+        "status": {},
+        "txn_id": "206_50",
+        "hash": "38a407cd7d38b41132709485046d7817571b73c32433877751399e229ce11ce2",
+        "settings_id": 4
+      }
+    },
+    "apiTxn": {
+      "example": {
+        "id": 5,
+        "sender": 201,
+        "receiver": 208,
+        "amount": 10030,
+        "balance": 900370,
+        "spent_by": 98,
+        "prev_hash": "56292515f7d3a7110811eb8de26b3f75f82a0766aa5a1fd66ebcfcb84fe6d5ff",
+        "settings_id": 2,
+        "sign": "c93e19492c939492c93e1bea6878136e57d8cc4619a371e649ff394e40c2dd7752b87c6be770ebb4458d6ad90aba40a11ee218e72cc77ad4bcba4432b62ff61738c71b4876f99492",
+        "hash": "743c7850cccfba5e53a9002663ec1ddd1079315a98bdbfdde10e6044f56abefe"
+      }
+    },
+    "protobufAny": {
+      "example": {}
+    }
+  }
+}

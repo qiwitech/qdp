@@ -1,0 +1,131 @@
+syntax = "proto3";
+option go_package = "gatepb";
+
+// TODO: make gogo as import path?
+import "google/protobuf/any.proto";
+
+// Gate Service
+//
+// Gate API consists of a single service which operate accounts, account
+// settings and funds.
+package gate;
+
+message Status {
+  // A simple error code that can be easily handled by the client.
+  TransferCode code = 1;
+
+  // A developer-facing human-readable error message in English. It should
+  // both explain the error and offer an actionable resolution to it.
+  string message = 2;
+
+  // Additional error information that the client code can use to handle
+  // the error, such as retry delay or a help link.
+  repeated google.protobuf.Any details = 3;
+}
+
+message RouteMap {
+  // TODO: type switch - ketama,gossip,etc...
+  uint32 type = 1;
+  uint32 version = 2;
+  string target = 3;
+  repeated string nodes = 4;
+}
+
+message TestRouteMapAnotherType {
+  uint32 type = 1;
+  uint32 version = 2;
+  string target = 3;
+  repeated string nodes = 4;
+}
+
+message TransferItem {
+  uint64 receiver = 1;
+  int64 amount = 2;
+}
+
+message TransferRequest {
+  uint64 sender = 1;
+
+  // List of receiver IDs and amounts
+  repeated TransferItem batch = 2;
+
+  // ID of actual account settings
+  uint64 settings_id = 3;
+
+  // Hash sum of the previous transaction (omit or "" if first)
+  string prev_hash = 4;
+
+  string sign = 5;
+}
+
+enum TransferCode {
+  OK = 0;
+  INVALID_PREV_HASH = 1;
+  INVALID_SIGN = 2;
+  BAD_REQUEST = 3;
+  NO_BALANCE = 4;
+  INTERNAL_ERROR = 5;
+  SEE_OTHER = 6;
+  RETRY = 7;
+}
+
+message TransferResponse {
+  Status status = 1;
+  string txn_id = 2;
+  string hash = 3;
+  uint64 account = 4;
+  uint64 id = 5;
+  uint64 settings_id = 6;
+}
+
+message GetPrevHashRequest { uint64 account = 1; }
+
+message GetPrevHashResponse {
+  Status status = 1;
+  string hash = 2;
+}
+
+message GetBalanceRequest { uint64 account = 1; }
+
+message GetBalanceResponse {
+  Status status = 1;
+  int64 balance = 2;
+}
+
+message SettingsRequest {
+  uint64 account = 1;
+  string public_key = 2;
+  string prev_hash = 3;
+  string data_hash = 4;
+  string sign = 5;
+  bool verify_transfer_sign = 6;
+}
+
+message SettingsResponse {
+  Status status = 1;
+  string settings_id = 2;
+  string hash = 3;
+}
+
+message GetLastSettingsRequest { uint64 account = 1; }
+
+message GetLastSettingsResponse {
+  Status status = 1;
+
+  uint64 id = 4;
+  string hash = 5;
+  uint64 account = 6;
+  string public_key = 7;
+  string prev_hash = 8;
+  string data_hash = 9;
+  string sign = 10;
+  bool verify_transfer_sign = 11;
+}
+
+service ProcessorService {
+  rpc ProcessTransfer(TransferRequest) returns (TransferResponse);
+  rpc GetPrevHash(GetPrevHashRequest) returns (GetPrevHashResponse);
+  rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse);
+  rpc UpdateSettings(SettingsRequest) returns (SettingsResponse);
+  rpc GetLastSettings(GetLastSettingsRequest) returns (GetLastSettingsResponse);
+}

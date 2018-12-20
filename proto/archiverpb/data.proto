@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package archiverpb;
+
+enum Direction {
+  INPUT = 0;
+  OUTPUT = 1;
+}
+
+message Txn {
+  string id = 1;
+  string sender = 2;
+  string receiver = 3;
+
+  string amount = 4;
+  string balance = 5;
+
+  string spent_by = 6;
+
+  string settings_id = 7;
+
+  string prev_hash = 8;
+  string hash = 9;
+
+  string sign = 10;
+}
+
+message Settings {
+  string id = 1;
+  string account = 2;
+
+  string prev_hash = 3;
+  string hash = 4;
+
+  string public_key = 5;
+  string data_hash = 6;
+  string sign = 7;
+
+  bool verify_transfer_sign = 8;
+}
