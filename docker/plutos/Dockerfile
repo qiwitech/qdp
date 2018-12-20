@@ -1,0 +1,9 @@
+FROM ubuntu
+
+ARG BINARY
+
+COPY ${BINARY} /plutos
+
+ENTRYPOINT ["/plutos"]
+
+EXPOSE 31337

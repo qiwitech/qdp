@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+// TODO: make gogo as import path?
+import "google/protobuf/any.proto";
+import "github.com/qiwitech/qdp/proto/chainpb/chain.proto";
+
+// PlutoDB Service
+//
+package plutodbpb;
+
+message Status {
+  // A simple error code that can be easily handled by the client.
+  DBStatusCode code = 1;
+
+  // A developer-facing human-readable error message in English. It should
+  // both explain the error and offer an actionable resolution to it.
+  string message = 2;
+
+  // Additional error information that the client code can use to handle
+  // the error, such as retry delay or a help link.
+  repeated google.protobuf.Any details = 3;
+}
+
+enum DBStatusCode {
+  OK = 0;
+  INVALID_TOKEN = 1;
+  OTHER_ERROR = 2;
+}
+
+message GetHistoryRequest {
+  uint64 account = 1;
+  uint32 limit = 2;
+  string token = 3;
+}
+
+message GetHistoryResponse {
+  Status status = 1;
+  repeated chain.Txn txns = 2;
+  string token = 3;
+}
+
+message FetchRequest {
+  uint64 account = 1;
+  uint32 limit = 2;
+}
+
+message FetchResponse {
+  Status status = 1;
+  repeated chain.Txn txns = 2;
+  chain.Settings settings = 3;
+}
+
+message GetTxnMultiRequest { repeated chain.TxnID IDs = 1; }
+
+message GetTxnMultiResponse {
+  Status status = 1;
+  repeated chain.Txn txns = 2;
+}
+
+service PlutoDBService {
+  rpc GetHistory(GetHistoryRequest) returns (GetHistoryResponse);
+  rpc Fetch(FetchRequest) returns (FetchResponse);
+  rpc GetTxnMulti(GetTxnMultiRequest) returns (GetTxnMultiResponse);
+}

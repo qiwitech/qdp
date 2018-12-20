@@ -1,0 +1,346 @@
+syntax = "proto3";
+option go_package = "apipb";
+
+// TODO: make gogo as import path?
+import "google/protobuf/any.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+import "google/api/annotations.proto";
+
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+  info : {
+    version : "1.0";
+    contact : {
+      name: "rnd.center";
+      email: "a@rnd.center";
+    };
+    license: {
+      name: "we'll choose later";
+    };
+  };
+  schemes: HTTP;
+};
+
+// Plutos API Service
+//
+package api;
+
+// Status field.
+// It's a part of every response.
+message Status {
+  // A simple error code that can be easily handled by the client.
+  TransferCode code = 1;
+
+  // A developer-facing human-readable error message in English. It should
+  // both explain the error and offer an actionable resolution to it.
+  string message = 2;
+
+  // Additional error information that the client code can use to handle
+  // the error, such as retry delay or a help link.
+  repeated google.protobuf.Any details = 3;
+}
+
+// Receiver and amount item for TransferRequest.
+message TransferItem {
+  // Receiver ID
+  uint64 receiver = 1;
+  // Amount to send to that Receiver
+  int64 amount = 2;
+}
+
+// Request to transfer value to one or more receivers
+message TransferRequest {
+  // Value Sender
+  uint64 sender = 1;
+
+  // List of receiver IDs and amounts
+  repeated TransferItem batch = 2;
+
+  // ID of actual account settings
+  uint64 settings_id = 3;
+
+  // Hash sum of the previous transaction (omit or "" if first)
+  string prev_hash = 4;
+
+  // Request Sign
+  string sign = 5;
+
+  // Optional metadata to save in metadb if enabled
+  Meta metadata = 6;
+}
+
+// Response Status code
+enum TransferCode {
+  OK = 0;
+  INVALID_PREV_HASH = 1;
+  INVALID_SIGN = 2;
+  BAD_REQUEST = 3;
+  NO_BALANCE = 4;
+  INTERNAL_ERROR = 5;
+  RETRY = 7;
+  METADATA_ERROR = 8;
+}
+
+// Response on TransferRequest
+message TransferResponse {
+  // Operation Status
+  Status status = 1;
+  // Last transaction BatchID
+  string txn_id = 2;
+  // Last transaction Hash
+  // To use it in the next request
+  string hash = 3;
+  // Last Settings ID
+  uint64 settings_id = 4;
+}
+
+// Request for last transaction Hash for the Account
+message GetPrevHashRequest {
+  uint64 account = 1; // Account ID
+}
+
+// Response on GetPrevHashRequest
+message GetPrevHashResponse {
+  // Operation Status
+  Status status = 1;
+  // Hash of last transaction.
+  string hash = 2;
+}
+
+// Request for account balance
+message GetBalanceRequest {
+  // Account ID
+  uint64 account = 1;
+}
+
+// Response on GetBalanceRequest
+message GetBalanceResponse {
+  // Operation Status
+  Status status = 1;
+  // Account balance
+  int64 balance = 2;
+}
+
+// Request to change account settings
+message SettingsRequest {
+  // Account ID
+  uint64 account = 1;
+  // New Public Key
+  string public_key = 2;
+  // Hash of last Account Settings, omit or empty if first
+  string prev_hash = 3;
+  // User defined Data Hash
+  string data_hash = 4;
+  // Transaction Sign
+  string sign = 5;
+  // Enables sign checking for following requests
+  bool verify_transfer_sign = 6;
+}
+
+// Response on SettingsRequest
+message SettingsResponse {
+  // Operation Status
+  Status status = 1;
+  // Last account Settings ID
+  string settings_id = 2;
+  // Last account Settings Hash
+  string hash = 3;
+}
+
+// Request for last account Settings
+message GetLastSettingsRequest {
+  // Account ID
+  uint64 account = 1;
+}
+
+// Response on GetLastSettingsRequest
+message GetLastSettingsResponse {
+  // Operation Status
+  Status status = 1;
+
+  // Last Settings ID
+  uint64 id = 4;
+  // Last Settings Hash
+  string hash = 5;
+  // Acccount ID
+  uint64 account = 6;
+  // User Public Key
+  string public_key = 7;
+  // Hash of Previous settings
+  // None of empty if first
+  string prev_hash = 8;
+  // User defined Data Hash
+  string data_hash = 9;
+  // Request Sign
+  string sign = 10;
+  // True if sign checking for requests is enabled
+  bool verify_transfer_sign = 11;
+}
+
+// Request for account transactions History
+message GetHistoryRequest {
+  // Account ID
+  uint64 account = 1;
+  // Max number of transactions to return at page
+  uint32 limit = 2;
+  // Next page token
+  string token = 3;
+  //  bool load_meta = 4;
+}
+
+// Response of GetHistoryRequest
+message GetHistoryResponse {
+  // Operation Status
+  Status status = 1;
+  // Transactions list
+  repeated Txn txns = 2;
+  // Next page token
+  string token = 3;
+}
+
+// Human-friendly representation of Txn
+message Txn {
+  // Transaction ID
+  string id = 1;
+  // Sender
+  string sender = 4;
+  // Receiver
+  string receiver = 5;
+
+  // Amount
+  string amount = 6;
+  // Sender balance just after that transaction processed
+  string balance = 7;
+
+  // Receiver transaction ID which is taken into accout value of current
+  // transaction
+  string spent_by = 9;
+
+  // Hash of previous transaction
+  string prev_hash = 10;
+
+  // Actual settings ID at moment of transaction processing
+  string settings_id = 12;
+
+  // Request Sign
+  string sign = 13;
+  // Request Hash
+  string hash = 21;
+
+  // Metadata attached
+  Meta meta = 14;
+}
+
+// Metadata that could be attached to transactions
+message Meta {
+  // Unique key
+  bytes key = 1;
+  // Fields and values to use for indexation
+  map<string, bytes> index = 2;
+  // Other fields and values
+  map<string, bytes> data = 3;
+}
+
+// Request transactions by metadata keys
+message GetByMetaKeyRequest {
+  // Metadata keys
+  repeated bytes keys = 1;
+}
+
+// Response on GetByMetaKeyRequest
+message GetByMetaKeyResponse {
+  // Operation Status
+  Status status = 1;
+  // List of matching transactions
+  repeated Txn txns = 2;
+}
+
+// Request for metadata by query
+message SearchMetaRequest {
+  // Fields and values to match
+  // Only indexed fields are matched
+  map<string, bytes> index = 2;
+  // Next page token
+  bytes token = 3;
+  // Max number of items to return at page
+  int32 limit = 4;
+}
+
+// Response on SearchMetaRequest
+message SearchMetaResponse {
+  // Operation Status
+  Status status = 1;
+  // Metadata item
+  repeated Meta items = 2;
+  // Next page token
+  bytes next_token = 3;
+}
+
+// Request to write new metadata (or rewrite)
+message PutMetaRequest {
+  // Metadata to write
+  Meta meta = 1;
+}
+
+// Response on PutMetaRequest
+message PutMetaResponse {
+  // Operation Status
+  Status status = 1;
+}
+
+// API Service is an plutoapi service
+service APIService {
+  // Process transfer. Could be single transaction or batch
+  rpc ProcessTransfer(TransferRequest) returns (TransferResponse) {
+    option (google.api.http) = {
+      post : "/processTransfer"
+      body : "*"
+    };
+  }
+  // Get Account last Hash
+  rpc GetPrevHash(GetPrevHashRequest) returns (GetPrevHashResponse) {
+    option (google.api.http) = {
+      post : "/getPrevHash"
+      body : "*"
+    };
+  }
+  // Get Account Balance
+  rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse) {
+    option (google.api.http) = {
+      post : "/getBalance"
+      body : "*"
+    };
+  }
+  // Update account Settings
+  rpc UpdateSettings(SettingsRequest) returns (SettingsResponse) {
+    option (google.api.http) = {
+      post : "/updateSettings"
+      body : "*"
+    };
+  }
+  // Get Account Settings last Hash
+  rpc GetLastSettings(GetLastSettingsRequest)
+      returns (GetLastSettingsResponse) {
+    option (google.api.http) = {
+      post : "/getLastSettings"
+      body : "*"
+    };
+  }
+
+  // Get Account transactions History
+  rpc GetHistory(GetHistoryRequest) returns (GetHistoryResponse) {
+    option (google.api.http) = {
+      post : "/getHistory"
+      body : "*"
+    };
+  }
+
+  // Get Metadata by key
+  rpc GetByMetaKey(GetByMetaKeyRequest) returns (GetByMetaKeyResponse);
+
+  // Search for metadata by query
+  rpc SearchMeta(SearchMetaRequest) returns (SearchMetaResponse);
+
+  // Put new metadata at requested key
+  // meta.Key myst be unique. Rewritten if present
+  rpc PutMeta(PutMetaRequest) returns (PutMetaResponse);
+}

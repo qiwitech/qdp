@@ -1,0 +1,705 @@
+{
+  "pasePath": "/v1",
+  "definitions": {
+    "apiGetBalanceRequest": {
+      "example": {
+        "account": 200
+      },
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "integer",
+          "format": "uint64",
+          "title": "Account ID"
+        }
+      },
+      "title": "Request for account balance"
+    },
+    "apiGetBalanceResponse": {
+      "properties": {
+        "balance": {
+          "example": 20030,
+          "type": "integer",
+          "format": "int64",
+          "title": "Account balance"
+        },
+        "status": {
+          "$ref": "#/definitions/apiStatus"
+        }
+      },
+      "type": "object",
+      "title": "Response on GetBalanceRequest"
+    },
+    "apiGetHistoryRequest": {
+      "example": {
+        "account": 201,
+        "limit": 10,
+        "token": "token_value"
+      },
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "integer",
+          "format": "uint64",
+          "title": "Account ID"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "title": "Max number of transactions to return at page"
+        },
+        "token": {
+          "type": "string",
+          "title": "Next page token"
+        }
+      },
+      "title": "Request for account transactions History"
+    },
+    "apiGetHistoryResponse": {
+      "properties": {
+        "token": {
+          "example": "next_token_value",
+          "type": "string",
+          "title": "Next page token"
+        },
+        "status": {
+          "$ref": "#/definitions/apiStatus"
+        },
+        "txns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiTxn"
+          },
+          "title": "Transactions list"
+        }
+      },
+      "type": "object",
+      "title": "Response of GetHistoryRequest"
+    },
+    "apiGetLastSettingsRequest": {
+      "example": {
+        "account": 201
+      },
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "integer",
+          "format": "uint64",
+          "title": "Account ID"
+        }
+      },
+      "title": "Request for last account Settings"
+    },
+    "apiGetLastSettingsResponse": {
+      "example": {
+        "status": {},
+        "id": 13,
+        "account": 202,
+        "public_key": "Z4hMo8osHh8DNqAERkEEXauPzNXhHGcdMoVUo9f3XBDEXtfEhUkL3NfSNB7oTqfV96A87Qg72UxYDd14TvDMVNr9",
+        "prev_hash": "25d4f2a86deb5e2574bb3210b67bb24fcc4afb19f93a7b65a057daa874a9d18e",
+        "data_hash": "a1fb50e6c86fae1679ef3351296fd6713411a08cf8dd1790a4fd05fae8688164",
+        "hash": "1a252402972f6057fa53cc172b52b9ffca698e18311facd0f3b06ecaaef79e17",
+        "sign": "01765ddfd925d70d41d53cabdba5f2588e678e534ef5d8840a813bc58d33198039006ce6395c6b95747a2e05d21ff3a47389638ba9405fd11ab1b0857f56426fcc6b9c6b95747a20",
+        "verify_transfer_sign": true
+      },
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/apiStatus"
+        },
+        "id": {
+          "type": "integer",
+          "format": "uint64",
+          "title": "Last Settings ID"
+        },
+        "hash": {
+          "type": "string",
+          "title": "Last Settings Hash"
+        },
+        "account": {
+          "type": "integer",
+          "format": "uint64",
+          "title": "Acccount ID"
+        },
+        "public_key": {
+          "type": "string",
+          "title": "User Public Key"
+        },
+        "prev_hash": {
+          "type": "string",
+          "title": "Hash of Previous settings\nNone of empty if first"
+        },
+        "data_hash": {
+          "type": "string",
+          "title": "User defined Data Hash"
+        },
+        "sign": {
+          "type": "string",
+          "title": "Request Sign"
+        },
+        "verify_transfer_sign": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "True if sign checking for requests is enabled"
+        }
+      },
+      "title": "Response on GetLastSettingsRequest"
+    },
+    "apiGetPrevHashRequest": {
+      "example": {
+        "account": 200
+      },
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "integer",
+          "format": "uint64"
+        }
+      },
+      "title": "Request for last transaction Hash for the Account"
+    },
+    "apiGetPrevHashResponse": {
+      "properties": {
+        "hash": {
+          "example": "252402972f6057fa53cc172b52b9ffca698e18311facd0f3b06ecaaef79e17",
+          "type": "string",
+          "description": "Hash of last transaction."
+        },
+        "status": {
+          "$ref": "#/definitions/apiStatus"
+        }
+      },
+      "type": "object",
+      "title": "Response on GetPrevHashRequest"
+    },
+    "apiSettingsRequest": {
+      "example": {
+        "account": 205,
+        "public_key": "Z4hMo8osHh8DNqAERkEEXauPzNXhHGcdMoVUo9f3XBDEXtfEhUkL3NfSNB7oTqfV96A87Qg72UxYDd14TvDMVNr9",
+        "prev_hash": "85a0e6eb5530a682fa88345a5e7a144248f49e5b71b3eb587a9db5cd2957495a",
+        "data_hash": "1dadd7223f8953c76459851cca53c62990c1a7b87a5795d31bbfa4059160e9f8",
+        "sign": "9492c93e19492c939492c93e1bea6878136e57d8cc4619a371e649ff394e40c2dd7752b87c6be770ebb4458d6ad90aba40a11ee218e72cc77ad4bcba4432b62ff61738c71b4876f9",
+        "verify_transfer_sign": false
+      },
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "integer",
+          "format": "uint64",
+          "title": "Account ID"
+        },
+        "public_key": {
+          "type": "string",
+          "title": "New Public Key"
+        },
+        "prev_hash": {
+          "type": "string",
+          "title": "Hash of last Account Settings, omit or empty if first"
+        },
+        "data_hash": {
+          "type": "string",
+          "title": "User defined Data Hash"
+        },
+        "sign": {
+          "type": "string",
+          "title": "Transaction Sign"
+        },
+        "verify_transfer_sign": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Enables sign checking for following requests"
+        }
+      },
+      "title": "Request to change account settings"
+    },
+    "apiSettingsResponse": {
+      "example": {
+        "status": {},
+        "settings_id": "205_3",
+        "hash": "9efe5a55840d37eb5db13a22ccab7e8f9867c982d1f7d18313c63fa0aa1c801b"
+      },
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/apiStatus"
+        },
+        "settings_id": {
+          "type": "string",
+          "title": "Last account Settings ID"
+        },
+        "hash": {
+          "type": "string",
+          "title": "Last account Settings Hash"
+        }
+      },
+      "title": "Response on SettingsRequest"
+    },
+    "apiStatus": {
+      "example": {
+        "code": "OK"
+      },
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/apiTransferCode"
+        },
+        "message": {
+          "type": "string",
+          "description": "A developer-facing human-readable error message in English. It should\nboth explain the error and offer an actionable resolution to it."
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          },
+          "description": "Additional error information that the client code can use to handle\nthe error, such as retry delay or a help link."
+        }
+      },
+      "description": "Status field.\nIt's a part of every response."
+    },
+    "apiTransferRequest": {
+      "example": {
+        "sender": 206,
+        "batch": [
+          {
+            "receiver": 207,
+            "amount": 10000
+          },
+          {
+            "receiver": 208,
+            "amount": 900
+          }
+        ],
+        "settings_id": 4,
+        "prev_hash": "251afbc1fe2e0118f21efcd99a65edefb597b294c5b10ed79b7c46017614e8db",
+        "sign": "9492c93e19492c939492c93e1bea6878136e57d8cc4619a371e649ff394e40c2dd7752b87c6be770ebb4458d6ad90aba40a11ee218e72cc77ad4bcba4432b62ff61738c71b4876f9"
+      },
+      "type": "object",
+      "properties": {
+        "sender": {
+          "type": "integer",
+          "format": "uint64",
+          "title": "Value Sender"
+        },
+        "batch": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiTransferItem"
+          },
+          "title": "List of receiver IDs and amounts"
+        },
+        "settings_id": {
+          "type": "integer",
+          "format": "uint64",
+          "title": "ID of actual account settings"
+        },
+        "prev_hash": {
+          "type": "string",
+          "title": "Hash sum of the previous transaction (omit or \"\" if first)"
+        },
+        "sign": {
+          "type": "string",
+          "title": "Request Sign"
+        },
+        "metadata": {
+          "$ref": "#/definitions/apiMeta"
+        }
+      },
+      "title": "Request to transfer value to one or more receivers"
+    },
+    "apiTransferResponse": {
+      "example": {
+        "status": {},
+        "txn_id": "206_50",
+        "hash": "38a407cd7d38b41132709485046d7817571b73c32433877751399e229ce11ce2",
+        "settings_id": 4
+      },
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/apiStatus"
+        },
+        "txn_id": {
+          "type": "string",
+          "title": "Last transaction BatchID"
+        },
+        "hash": {
+          "type": "string",
+          "title": "Last transaction Hash\nTo use it in the next request"
+        },
+        "settings_id": {
+          "type": "integer",
+          "format": "uint64",
+          "title": "Last Settings ID"
+        }
+      },
+      "title": "Response on TransferRequest"
+    },
+    "apiTxn": {
+      "example": {
+        "id": 5,
+        "sender": 201,
+        "receiver": 208,
+        "amount": 10030,
+        "balance": 900370,
+        "spent_by": 98,
+        "prev_hash": "56292515f7d3a7110811eb8de26b3f75f82a0766aa5a1fd66ebcfcb84fe6d5ff",
+        "settings_id": 2,
+        "sign": "c93e19492c939492c93e1bea6878136e57d8cc4619a371e649ff394e40c2dd7752b87c6be770ebb4458d6ad90aba40a11ee218e72cc77ad4bcba4432b62ff61738c71b4876f99492",
+        "hash": "743c7850cccfba5e53a9002663ec1ddd1079315a98bdbfdde10e6044f56abefe"
+      },
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "Transaction ID"
+        },
+        "sender": {
+          "type": "string",
+          "title": "Sender"
+        },
+        "receiver": {
+          "type": "string",
+          "title": "Receiver"
+        },
+        "amount": {
+          "type": "string",
+          "title": "Amount"
+        },
+        "balance": {
+          "type": "string",
+          "title": "Sender balance just after that transaction processed"
+        },
+        "spent_by": {
+          "type": "string",
+          "title": "Receiver transaction ID which is taken into accout value of current\ntransaction"
+        },
+        "prev_hash": {
+          "type": "string",
+          "title": "Hash of previous transaction"
+        },
+        "settings_id": {
+          "type": "string",
+          "title": "Actual settings ID at moment of transaction processing"
+        },
+        "sign": {
+          "type": "string",
+          "title": "Request Sign"
+        },
+        "hash": {
+          "type": "string",
+          "title": "Request Hash"
+        },
+        "meta": {
+          "$ref": "#/definitions/apiMeta"
+        }
+      },
+      "title": "Human-friendly representation of Txn"
+    },
+    "protobufAny": {
+      "example": {},
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string",
+          "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+        },
+        "value": {
+          "type": "string",
+          "format": "byte",
+          "description": "Must be a valid serialized protocol buffer of the above specified type."
+        }
+      },
+      "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := ptypes.MarshalAny(foo)\n     ...\n     foo := &pb.Foo{}\n     if err := ptypes.UnmarshalAny(any, foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    },
+    "apiGetByMetaKeyResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/apiStatus"
+        },
+        "txns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiTxn"
+          },
+          "title": "List of matching transactions"
+        }
+      },
+      "title": "Response on GetByMetaKeyRequest"
+    },
+    "apiMeta": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "format": "byte",
+          "title": "Unique key"
+        },
+        "index": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "byte"
+          },
+          "title": "Fields and values to use for indexation"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "byte"
+          },
+          "title": "Other fields and values"
+        }
+      },
+      "title": "Metadata that could be attached to transactions"
+    },
+    "apiPutMetaResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/apiStatus"
+        }
+      },
+      "title": "Response on PutMetaRequest"
+    },
+    "apiSearchMetaResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/apiStatus"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiMeta"
+          },
+          "title": "Metadata item"
+        },
+        "next_token": {
+          "type": "string",
+          "format": "byte",
+          "title": "Next page token"
+        }
+      },
+      "title": "Response on SearchMetaRequest"
+    },
+    "apiTransferCode": {
+      "type": "string",
+      "enum": [
+        "OK",
+        "INVALID_PREV_HASH",
+        "INVALID_SIGN",
+        "BAD_REQUEST",
+        "NO_BALANCE",
+        "INTERNAL_ERROR",
+        "RETRY",
+        "METADATA_ERROR"
+      ],
+      "default": "OK",
+      "title": "Response Status code"
+    },
+    "apiTransferItem": {
+      "type": "object",
+      "properties": {
+        "receiver": {
+          "type": "integer",
+          "format": "uint64",
+          "title": "Receiver ID"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int64",
+          "title": "Amount to send to that Receiver"
+        }
+      },
+      "description": "Receiver and amount item for TransferRequest."
+    }
+  },
+  "swagger": "2.0",
+  "info": {
+    "title": "Plutos API Service",
+    "version": "1.0",
+    "contact": {
+      "name": "rnd.center",
+      "email": "a@rnd.center"
+    },
+    "license": {
+      "name": "we'll choose later"
+    }
+  },
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/getBalance": {
+      "post": {
+        "summary": "Get Account Balance",
+        "operationId": "GetBalance",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiGetBalanceResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiGetBalanceRequest"
+            }
+          }
+        ],
+        "tags": [
+          "APIService"
+        ]
+      }
+    },
+    "/getHistory": {
+      "post": {
+        "summary": "Get Account transactions History",
+        "operationId": "GetHistory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiGetHistoryResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiGetHistoryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "APIService"
+        ]
+      }
+    },
+    "/getLastSettings": {
+      "post": {
+        "summary": "Get Account Settings last Hash",
+        "operationId": "GetLastSettings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiGetLastSettingsResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiGetLastSettingsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "APIService"
+        ]
+      }
+    },
+    "/getPrevHash": {
+      "post": {
+        "summary": "Get Account last Hash",
+        "operationId": "GetPrevHash",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiGetPrevHashResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiGetPrevHashRequest"
+            }
+          }
+        ],
+        "tags": [
+          "APIService"
+        ]
+      }
+    },
+    "/processTransfer": {
+      "post": {
+        "summary": "Process transfer. Could be single transaction or batch",
+        "operationId": "ProcessTransfer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiTransferResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiTransferRequest"
+            }
+          }
+        ],
+        "tags": [
+          "APIService"
+        ]
+      }
+    },
+    "/updateSettings": {
+      "post": {
+        "summary": "Update account Settings",
+        "operationId": "UpdateSettings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiSettingsResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiSettingsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "APIService"
+        ]
+      }
+    }
+  }
+}

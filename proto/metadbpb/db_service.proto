@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+// TODO: make gogo as import path?
+import "google/protobuf/any.proto";
+
+package metadbpb;
+
+message Status {
+  // A simple error code that can be easily handled by the client.
+  DBStatusCode code = 1;
+
+  // A developer-facing human-readable error message in English. It should
+  // both explain the error and offer an actionable resolution to it.
+  string message = 2;
+
+  // Additional error information that the client code can use to handle
+  // the error, such as retry delay or a help link.
+  repeated google.protobuf.Any details = 3;
+}
+
+enum DBStatusCode {
+  OK = 0;
+  OTHER_ERROR = 1;
+}
+
+message Pair {
+  bytes key = 1;
+  bytes value = 2;
+}
+
+message Data {
+  bytes key = 1;
+  repeated Pair fields = 2;
+  repeated Pair index = 3;
+}
+
+message PutRequest {
+  bytes prefix = 1;
+  Data data = 2;
+}
+
+message PutResponse { Status status = 1; }
+
+message GetRequest {
+  bytes prefix = 1;
+  bytes key = 2;
+}
+
+message GetResponse {
+  Status status = 1;
+  Data data = 2;
+}
+
+message GetMultiRequest {
+  bytes prefix = 1;
+  repeated bytes keys = 2;
+}
+
+message GetMultiResponse {
+  Status status = 1;
+  repeated Data results = 2;
+}
+
+message DeleteRequest {
+  bytes prefix = 1;
+  bytes key = 2;
+}
+
+message DeleteResponse { Status status = 1; }
+
+message SearchRequest {
+  bytes prefix = 1;
+  repeated Pair filters = 2;
+  bytes token = 3;
+  int32 limit = 4;
+}
+
+message SearchResponse {
+  Status status = 1;
+  repeated Data items = 2;
+  bytes next_token = 3;
+}
+
+service MetaDBService {
+  rpc Put(PutRequest) returns (PutResponse);
+  rpc Get(GetRequest) returns (GetResponse);
+  rpc GetMulti(GetMultiRequest) returns (GetMultiResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+  rpc Search(SearchRequest) returns (SearchResponse);
+}
