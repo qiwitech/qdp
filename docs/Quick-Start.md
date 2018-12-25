@@ -8,11 +8,11 @@ The simples way to sent test requests is a plutoclient tool. It can generate mos
 
 ## Transfers
 Run processing by one of ways described in install section. Than run command
-```
+```bash
 plutoclient prevhash 1
 ```
 If everything is working well you should see similar response
-```
+```json
 {
   "status": {},
   "hash": "0000000000000000000000000000000000000000000000000000000000000000"
@@ -33,7 +33,7 @@ We've sent transaction to transfer 0 value from account 1 to account 4.
 Here we can see transaction id, it's \<accountid\>\_\<transaction_id\> and transaction hash.
 
 We can try to send some value
-```
+```bash
 plutoclient transfer 1 4 1
 ```
 And we'll get error
@@ -105,14 +105,14 @@ $ plutoclient settings 2
 Here we can see settings our `public_key` and other settings fields. 
 
 Plutoclient signs transactions automatically if it has private key in a local database. Lets move it and try to send transfer request from account 2.
-```
+```bash
 $ mv .plutoclientdb{,_backup}
 $ plutoclient transfer 2 3 0
 error: gate: processor: invalid sign
 ```
 
 Now return it back and lets send valid transaction.
-```
+```bash
 $ mv .plutoclientdb{_backup,}
 $ plutoclient transfer 2 3 0
 {
