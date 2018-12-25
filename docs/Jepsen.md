@@ -1,8 +1,8 @@
 # Jepsen
 
-We tested our system with [jepsen](https://jepsen.io/) - framework for testing distributed systems in failure scenarios.
+We tested our system with [Jepsen](https://jepsen.io/) - framework for testing distributed systems in failure scenarios.
 
-Testing code is located in [plutos_jepsen](https://github.com/qiwitech/qdp_jepsen) repo.
+Testing code is located in [qiwitech/qdp-jepsen](https://github.com/qiwitech/qdp-jepsen) repo.
 
 ## Runnig the test
 

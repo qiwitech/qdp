@@ -18,7 +18,7 @@ It's the main repository with plutos code itself and commands.
 
 There are also two RPC libraries with protobuf service generators: [tcprpc](https://github.com/qiwitech/tcprpc) and [graceful](https://github.com/qiwitech/graceful)
 
-And there is [jepsen test](https://github.com/qiwitech/qdp_jepsen).
+And there is [Jepsen test](https://github.com/qiwitech/qdp-jepsen).
 
 ## Database
 
