@@ -8,7 +8,7 @@ import (
 	"sync"
 
 	"github.com/btcsuite/btcd/btcec"
-	"github.com/coreos/bbolt"
+	bolt "github.com/coreos/bbolt"
 
 	"github.com/qiwitech/qdp/proto/apipb"
 	"github.com/qiwitech/qdp/pt"

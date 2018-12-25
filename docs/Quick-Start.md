@@ -30,7 +30,7 @@ $ plutoclient transfer 1 4 0
 }
 ```
 We've sent transaction to transfer 0 value from account 1 to account 4.
-Here we can see transaction id, it's <accountid>_<transaction_id> and transaction hash.
+Here we can see transaction id, it's \<accountid\>\_\<transaction_id\> and transaction hash.
 
 We can try to send some value
 ```
