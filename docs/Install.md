@@ -29,7 +29,7 @@ If you have go environment installed you can build all binaries from sources by 
 go install ./cmd/...
 ```
 
-If you are developer and you want to test some changes, the most convinient way would be to use `goreman` tool to start predefined configuration
+If you are developer and you want to test some changes, the most convenient way would be to use `goreman` tool to start predefined configuration
 ```
 goreman start
 ```

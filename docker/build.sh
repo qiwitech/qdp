@@ -2,7 +2,10 @@
 
 set -e
 
-repobase=rnd.im
+# Force build target to Linux X86_64
+export GOOS=linux
+export GOARCH=amd64
+
 list="plutos plutoapi sqldb"
 
 cd $(dirname $0)
@@ -12,19 +15,11 @@ then
 	list="$@"
 fi
 
-workdir=`mktemp -d -t plutos_build_XXXXXX`
-function rmworkdir {
-	rm -rf $workdir
-}
-trap rmworkdir 0
-
 function buildcont {
 	service=$1
 	echo "Building $service..."
 	go build -o $service/$service ../cmd/$service
 	docker build --build-arg BINARY=$service -t $service $service
-	#docker tag $service $repobase/$service
-	#docker push $repobase/$service
 }
 
 for service in $list; do
