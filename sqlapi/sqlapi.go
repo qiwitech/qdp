@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"strconv"
+	"time"
 
 	"github.com/juju/errors"
 	"vitess.io/vitess/go/mysql"
@@ -19,6 +20,8 @@ import (
 const (
 	TxnsTable = "txns"
 )
+
+var defTimeout = 5 * time.Second
 
 type (
 	callback  = func(*sqltypes.Result) error
@@ -51,7 +54,7 @@ func (s *Server) SetAPIService(a apipb.APIServiceInterface) {
 }
 
 func (s *Server) Serve(lis net.Listener) error {
-	l, err := mysql.NewFromListener(lis, &mysql.AuthServerNone{}, s)
+	l, err := mysql.NewFromListener(lis, &mysql.AuthServerNone{}, s, defTimeout, defTimeout)
 	if err != nil {
 		return errors.Trace(err)
 	}
@@ -73,6 +76,10 @@ func (s *Server) NewConnection(c *mysql.Conn) {
 
 func (s *Server) ConnectionClosed(c *mysql.Conn) {
 	log.Printf("closed conn: %v %v", c.RemoteAddr(), c.ID())
+}
+
+func (s *Server) WarningCount(c *mysql.Conn) uint16 {
+	return 0
 }
 
 func (s *Server) ComQuery(c *mysql.Conn, q string, cb callback) error {
