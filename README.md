@@ -1,3 +1,10 @@
+[![godoc](https://godoc.org/github.com/qiwitech/qdp?status.svg)](https://godoc.org/github.com/qiwitech/qdp)
+[![Build Status](https://travis-ci.org/qiwitech/qdp.svg?branch=master)](https://travis-ci.org/qiwitech/qdp/builds)
+[![codebeat badge](https://codebeat.co/badges/1812545a-2f5c-4f43-98a3-31a26d0bfc38)](https://codebeat.co/projects/github-com-qiwitech-qdp-master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/qiwitech/qdp)](https://goreportcard.com/report/github.com/qiwitech/qdp)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2567/badge)](https://bestpractices.coreinfrastructure.org/projects/2567)
+
+
 # Plutos (aka QDP)
 
 Plutos is an financial processing 💵 It's designed to replace existing bank systems, make it cheap, reliable and fast ⚡
@@ -10,7 +17,7 @@ Plutos is an financial processing 💵 It's designed to replace existing bank sy
 
 ## Where to start
 
-You should start from [documentation](./docs/index.md)
+The best place to start is [documentation](./docs/index.md)
 
 ## Repositories
 
