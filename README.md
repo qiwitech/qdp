@@ -1,6 +1,6 @@
 [![godoc](https://godoc.org/github.com/qiwitech/qdp?status.svg)](https://godoc.org/github.com/qiwitech/qdp)
-[![Build Status](https://travis-ci.org/nikandfor/qdp.svg?branch=master)](https://travis-ci.org/nikandfor/qdp/builds)
-[![codecov](https://codecov.io/gh/nikandfor/qdp/branch/master/graph/badge.svg)](https://codecov.io/gh/nikandfor/qdp)
+[![Build Status](https://travis-ci.org/qiwitech/qdp.svg?branch=master)](https://travis-ci.org/qiwitech/qdp/builds)
+[![codecov](https://codecov.io/gh/qiwitech/qdp/branch/master/graph/badge.svg)](https://codecov.io/gh/qiwitech/qdp)
 [![codebeat badge](https://codebeat.co/badges/1812545a-2f5c-4f43-98a3-31a26d0bfc38)](https://codebeat.co/projects/github-com-qiwitech-qdp-master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/qiwitech/qdp)](https://goreportcard.com/report/github.com/qiwitech/qdp)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2567/badge)](https://bestpractices.coreinfrastructure.org/projects/2567)
