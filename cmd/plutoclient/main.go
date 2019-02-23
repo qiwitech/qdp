@@ -50,7 +50,7 @@ func main() {
 			Name:  "settings",
 			Usage: "Perform settings operations",
 			Subcommands: []*cli.Command{
-				&cli.Command{
+				{
 					Name:   "last",
 					Usage:  "<account> - show current account settings",
 					Action: client.GetLastSettings,

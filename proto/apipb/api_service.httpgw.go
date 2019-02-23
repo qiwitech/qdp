@@ -11,8 +11,8 @@ package apipb
 import (
 	"context"
 
-	"github.com/qiwitech/graceful"
 	"github.com/pressly/chi"
+	"github.com/qiwitech/graceful"
 )
 
 func NewAPIServiceHandler(srv APIServiceInterface, c graceful.Codec) graceful.Handlerer {

@@ -42,12 +42,12 @@ func TestTransfer(t *testing.T) {
 
 func TestParseTransferItems(t *testing.T) {
 	testData := map[*apipb.TransferRequest][]string{
-		&apipb.TransferRequest{
+		{
 			Batch: []*apipb.TransferItem{
 				{Receiver: 0, Amount: 111},
 				{Receiver: 99999999999999, Amount: 1},
 			},
-		}: []string{
+		}: {
 			"0", "111",
 			"99999999999999", "1",
 		},

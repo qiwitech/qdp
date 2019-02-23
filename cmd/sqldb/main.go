@@ -12,11 +12,11 @@ import (
 
 	"github.com/facebookgo/flagenv"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/qiwitech/qdp/proto/plutodbpb"
 	"github.com/qiwitech/qdp/proto/pusherpb"
 	"github.com/qiwitech/qdp/pusher/remotepusher"
 	"github.com/qiwitech/qdp/sqlchain"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/qiwitech/tcprpc"
 	"golang.org/x/net/trace"
 )

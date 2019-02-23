@@ -26,9 +26,9 @@ import (
 	"github.com/beorn7/perks/quantile"
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/eapache/go-resiliency/breaker"
+	"github.com/pkg/errors"
 	"github.com/qiwitech/graceful"
 	"github.com/qiwitech/tcprpc"
-	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 	"golang.org/x/sync/errgroup"
 

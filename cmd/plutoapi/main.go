@@ -11,9 +11,9 @@ import (
 
 	"github.com/eapache/go-resiliency/breaker"
 	"github.com/facebookgo/flagenv"
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/qiwitech/graceful"
 	"github.com/qiwitech/tcprpc"
-	"github.com/prometheus/client_golang/prometheus"
 	"golang.org/x/net/trace"
 
 	"github.com/qiwitech/qdp/api"
