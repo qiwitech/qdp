@@ -34,7 +34,7 @@ Database is important part of the system. It stores transactions durably, so not
 Plutos could work without a database, but nothing would be stored persistently and some part of data would be lost if one of plutoses is stopped or crashed.
 
 The special database was developed along with plutos system to acheive maximum performance and reliability.
-Althrough it's not the subject to be published, general approach is described in the paper [AsgardDB: Fast and Scalable Financial Database](https://www.researchgate.net/publication/326816360_AsgardDB_Fast_and_Scalable_Financial_Database)
+Althrough it's not the subject to be published, general approach is described in [AsgardDB: Fast and Scalable Financial Database](https://www.researchgate.net/publication/326816360_AsgardDB_Fast_and_Scalable_Financial_Database)
 
 Simple mysql wrapper is provided to start with `./cmd/sqldb/`.
 
