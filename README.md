@@ -6,7 +6,7 @@
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2567/badge)](https://bestpractices.coreinfrastructure.org/projects/2567)
 
 
-# Plutos (aka QDP)
+# QDP (aka Plutos)
 
 Plutos is an financial processing 💵 It's designed to replace existing bank systems, make it cheap, reliable and fast ⚡
 
