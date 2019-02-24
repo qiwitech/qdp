@@ -40,5 +40,5 @@ Simple mysql wrapper is provided to start with `./cmd/sqldb/`.
 
 ## Authors
 
-* [Yuri Korzhenevsky Research and Development Center](https://www.rnd.center)
+* [Yuri Korzhenevsky R&D Center](https://www.rnd.center)
 * [QIWI Blockchain Technologies](https://qiwi.tech)
