@@ -29,6 +29,8 @@ archive:
     darwin: macOS
 snapshot:
   name_template: "{{ .Tag }}-next"
+release:
+  draft: true
 dockers:
   -
     binaries:
