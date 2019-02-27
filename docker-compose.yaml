@@ -1,26 +1,31 @@
 version: "3"
 services:
   plutos1:
-    image: plutos
+    image: qiwitech/qdp
+    entrypoint: "/plutos"
     command: ["-listen", ":31337", "-self", "plutos1:31337", "-nodes", "plutos1:31337,plutos2:31337,plutos3:31337", "-db", "plutodb:38388"]
   plutos2:
-    image: plutos
+    image: qiwitech/qdp
+    entrypoint: "/plutos"
     command: ["-listen", ":31337", "-self", "plutos2:31337", "-nodes", "plutos1:31337,plutos2:31337,plutos3:31337", "-db", "plutodb:38388"]
   plutos3:
-    image: plutos
+    image: qiwitech/qdp
+    entrypoint: "/plutos"
     command: ["-listen", ":31337", "-self", "plutos3:31337", "-nodes", "plutos1:31337,plutos2:31337,plutos3:31337", "-db", "plutodb:38388"]
   plutoapi:
-    image: plutoapi
+    image: qiwitech/qdp
+    entrypoint: "/plutoapi"
     command: ["-listen", ":9090", "-gate", "plutos1:31337", "-plutodb", "plutodb:38388"]
     ports:
     - "9090:9090"
   plutodb:
-    image: sqldb
+    image: qiwitech/qdp
+    entrypoint: "/plutosqldb"
     command: ["-listen", ":38388", "-auth", "root:my-secret-pw", "-dbaddr", "mysql:3306", "-dbname", "plutodb"]
     restart: always
     links:
     - mysql
   mysql:
-    image: mysql
+    image: mysql:5.5
     environment:
     - MYSQL_ROOT_PASSWORD=my-secret-pw
