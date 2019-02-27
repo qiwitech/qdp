@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/qiwitech/qdp.svg?branch=master)](https://travis-ci.org/qiwitech/qdp/builds)
 [![Go Report Card](https://goreportcard.com/badge/github.com/qiwitech/qdp)](https://goreportcard.com/report/github.com/qiwitech/qdp)
 ![GitHub](https://img.shields.io/github/license/qiwitech/qdp.svg)
+[![MicroBadger Size](https://img.shields.io/microbadger/image-size/qiwitech/qdp.svg)](https://hub.docker.com/r/qiwitech/qdp)
 
 # QDP (aka Plutos)
 
