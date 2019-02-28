@@ -38,7 +38,6 @@ dockers:
     - plutoapi
     - plutosqldb
     - plutoclient
-    skip_push: true
     image_templates:
     - "qiwitech/qdp:{{ .Tag }}"
     - "qiwitech/qdp:latest"
