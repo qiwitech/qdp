@@ -27,7 +27,8 @@ func New(c *sql.DB) (*DB, error) {
 		spent_by    BIGINT UNSIGNED,
 		prev_hash   VARCHAR(64),
 		hash        VARCHAR(64),
-		sign        VARCHAR(250)
+		sign        VARCHAR(250),
+		UNIQUE KEY (sender, id)
 	)`))
 	if err != nil {
 		return nil, err
@@ -40,7 +41,8 @@ func New(c *sql.DB) (*DB, error) {
 		data_hash   VARCHAR(64),
 		hash        VARCHAR(64),
 		sign        VARCHAR(250),
-		public_key  VARCHAR(250)
+		public_key  VARCHAR(250),
+		UNIQUE KEY (account, id)
 	)`))
 	if err != nil {
 		return nil, err
@@ -64,6 +66,8 @@ func (d *DB) Push(ctx context.Context, txns []pt.Txn) (err error) {
 		b.WriteString(fmt.Sprintf("(%d, %d, %d, %d, %d, %d, %d, %q, %q, %q)", txn.ID, txn.Sender, txn.Receiver, txn.Amount, txn.Balance, txn.SettingsID, txn.SpentBy,
 			hex.EncodeToString(txn.PrevHash[:]), hex.EncodeToString(txn.Sign[:]), hex.EncodeToString(txn.Hash[:])))
 	}
+
+	b.WriteString(` ON DUPLICATE KEY UPDATE spent_by = VALUES(spent_by)`)
 
 	_, err = d.c.Exec(b.String())
 
