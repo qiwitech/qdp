@@ -41,3 +41,12 @@ dockers:
     image_templates:
     - "qiwitech/qdp:{{ .Tag }}"
     - "qiwitech/qdp:latest"
+nfpm:
+  vendor: QIWI Blockchain Technologies
+  homepage: http://qiwi.tech/
+  maintainer: a@rndhq.com 
+  description: Plutos is an financial processing
+  license: GPL 3.0
+  formats:
+    - deb
+    - rpm
