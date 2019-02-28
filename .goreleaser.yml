@@ -6,21 +6,29 @@ builds:
     binary: plutos
     goarch:
       - amd64
+    env:
+      - CGO_ENABLED=0
   -
     main: ./cmd/plutoapi/main.go
     binary: plutoapi
     goarch:
       - amd64
+    env:
+      - CGO_ENABLED=0
   -
     main: ./cmd/sqldb/main.go
     binary: plutosqldb
     goarch:
       - amd64
+    env:
+      - CGO_ENABLED=0
   -
     main: ./cmd/plutoclient/main.go
     binary: plutoclient
     goarch:
       - amd64
+    env:
+      - CGO_ENABLED=0
 archive:
   format: zip
   replacements:
